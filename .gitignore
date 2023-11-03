@@ -1,0 +1,10 @@
+# Doxygen files
+doc/html/
+doc/man/
+
+# Binary/Build files
+bin/
+build/
+
+# configure.sh generated
+Makefile.cfg
