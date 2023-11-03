@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:50:26 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/03 15:08:56 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/03 16:32:41 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_vec4f
 	GLfloat	y;
 	GLfloat	z;
 	GLfloat	w;
-}	t_vec4f;
+}	t_vec4f __attribute__((packed));
 
 /**
  * @struct s_vec3f
@@ -56,7 +56,7 @@ typedef struct s_vec3f
 	GLfloat	x;
 	GLfloat	y;
 	GLfloat	z;
-}	t_vec3f;
+}	t_vec3f __attribute__((packed));
 
 // ************************************************************************** //
 // *                                                                        * //
