@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:49:30 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/03 16:32:52 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/04 13:08:40 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@
  * @struct s_mat4
  * @brief Matrix 4x4.
  */
-typedef struct s_mat4 {
+typedef struct __attribute__((packed)) s_mat4 {
 	GLfloat	x[4];
 	GLfloat	y[4];
 	GLfloat	z[4];
 	GLfloat	w[4];
-}	t_mat4 __attribute__((packed));
+}	t_mat4;
 
 // ************************************************************************** //
 // *                                                                        * //

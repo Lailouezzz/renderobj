@@ -38,6 +38,7 @@ t_dvb	*dvb_init(void)
 		return (NULL);
 	}
 	dvb->size = 0;
+	return (dvb);
 }
 
 t_dvb	*dvb_init_vb(
@@ -73,7 +74,9 @@ int	dvb_insert_back(
 		const t_vec3f *vec
 		)
 {
-
+	(void)(dvb);
+	(void)(vec);
+	return (0);
 }
 
 int	dvb_pop_back(
@@ -81,6 +84,8 @@ int	dvb_pop_back(
 		t_vec3f *vec
 		)
 {
-
+	(void)(dvb);
+	(void)(vec);
+	return (0);
 }
 

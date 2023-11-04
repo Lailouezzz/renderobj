@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:50:26 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/03 16:32:41 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/04 13:08:31 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,24 @@
  * @struct s_vec4f
  * @brief Vector 4.
  */
-typedef struct s_vec4f
+typedef struct __attribute__((packed)) s_vec4f
 {
 	GLfloat	x;
 	GLfloat	y;
 	GLfloat	z;
 	GLfloat	w;
-}	t_vec4f __attribute__((packed));
+}	t_vec4f;
 
 /**
  * @struct s_vec3f
  * @brief Vector 3.
  */
-typedef struct s_vec3f
+typedef struct __attribute__((packed)) s_vec3f
 {
 	GLfloat	x;
 	GLfloat	y;
 	GLfloat	z;
-}	t_vec3f __attribute__((packed));
+}	t_vec3f;
 
 // ************************************************************************** //
 // *                                                                        * //
