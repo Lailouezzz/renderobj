@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 14:18:38 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/03 15:35:17 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/04 13:12:59 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,27 +47,28 @@ t_mat4	*mat_mat4ident(
 }
 
 t_mat4	*mat_mat4xmat4(
-			t_mat4 *rmat,
-			const t_mat4 *mat1,
+			t_mat4 *mat1,
 			const t_mat4 *mat2
 			)
 {
 	int		k;
+	t_mat4	rmat;
 
 	k = 0;
 	while (k < 4)
 	{
-		rmat->x[k] = mat1->x[0] * mat2->x[k] + mat1->x[1] * mat2->y[k]
+		rmat.x[k] = mat1->x[0] * mat2->x[k] + mat1->x[1] * mat2->y[k]
 			+ mat1->x[2] * mat2->z[k] + mat1->x[3] * mat2->w[k];
-		rmat->y[k] = mat1->y[0] * mat2->x[k] + mat1->y[1] * mat2->y[k]
+		rmat.y[k] = mat1->y[0] * mat2->x[k] + mat1->y[1] * mat2->y[k]
 			+ mat1->y[2] * mat2->z[k] + mat1->y[3] * mat2->w[k];
-		rmat->z[k] = mat1->z[0] * mat2->x[k] + mat1->z[1] * mat2->y[k]
+		rmat.z[k] = mat1->z[0] * mat2->x[k] + mat1->z[1] * mat2->y[k]
 			+ mat1->z[2] * mat2->z[k] + mat1->z[3] * mat2->w[k];
-		rmat->w[k] = mat1->w[0] * mat2->x[k] + mat1->w[1] * mat2->y[k]
+		rmat.w[k] = mat1->w[0] * mat2->x[k] + mat1->w[1] * mat2->y[k]
 			+ mat1->w[2] * mat2->z[k] + mat1->w[3] * mat2->w[k];
 		++k;
 	}
-	return (rmat);
+	*mat1 = rmat;
+	return (mat1);
 }
 
 t_vec4f	*mat_mat4xvec4(

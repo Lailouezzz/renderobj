@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:49:30 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/04 13:08:40 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/04 13:13:18 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,12 @@ t_mat4	*mat_mat4ident(
 
 /**
  * @brief Perform a matrix matrix product (mat1 * mat2).
- * @param rmat #s_mat4 store the result.
- * @param mat1 #s_mat4 the mat1.
+ * @param mat1 #s_mat4 the mat1. (store the result).
  * @param mat2 #s_mat4 the mat2.
- * @return Pointer to rmat.
+ * @return Pointer to mat1.
  */
 t_mat4	*mat_mat4xmat4(
-			t_mat4 *rmat,
-			const t_mat4 *mat1,
+			t_mat4 *mat1,
 			const t_mat4 *mat2
 			);
 
