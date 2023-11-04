@@ -95,12 +95,18 @@ $(BIN_PATH): $(OBJS)
 
 # Make objects
 
-$(OBJDIR)/%.o: $(SRCDIR)/%
+$(OBJDIR)/%.c.o: $(SRCDIR)/%.c
 	$(call qcmd,$(MKDIR) -p $(@D))
 	$(call bcmd,cc,$<,$(CC) -c $(CFLAGS) -o $@ $<)
 
+# Make object ressources
+
+$(OBJDIR)/%.res.o: $(RESDIR)/%
+	$(call qcmd,$(MKDIR) -p $(@D))
+	$(call bcmd,ld,$<,ld --format=binary -r $< -o $@)
+
 # Include generated dep by cc
 
--include $(DEP)
+-include $(DEPS)
 
 .PHONY: all-infini-3d
