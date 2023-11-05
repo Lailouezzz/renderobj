@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:49:30 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/04 13:13:18 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/05 01:28:34 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,30 @@ t_vec4f	*mat_mat4xvec4(
 t_mat4	*mat_transmat4(
 			t_mat4 *rmat,
 			const t_vec3f *vec
+			);
+
+/**
+ * @brief Produce a scale matrix.
+ * @param rmat #s_mat4 store the result.
+ * @param vec #s_vec3f the vec for the scaling. (1, 1, 1) * mat = rmat
+ * @return Pointer to rmat.
+ */
+t_mat4	*mat_scalemat4(
+			t_mat4 *rmat,
+			const t_vec3f *vec
+			);
+
+/**
+ * @brief Produce a scale matrix.
+ * @param rmat #s_mat4 store the result.
+ * @param vec #s_vec3f the vec for the scaling. (1, 1, 1) * mat = rmat
+ * @return Pointer to rmat.
+ */
+t_mat4	*mat_lookatmat4(
+			t_mat4 *rmat,
+			const t_vec3f *pos,
+			const t_vec3f *look,
+			const t_vec3f *up
 			);
 
 #endif

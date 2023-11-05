@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 14:18:38 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/04 13:12:59 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/05 01:42:54 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,7 @@ t_mat4	*mat_mat4ident(
 			t_mat4 *m
 			)
 {
-	mat_mat4empty(m);
-	m->x[0] = 1.;
-	m->y[1] = 1.;
-	m->z[2] = 1.;
-	m->w[3] = 1.;
+	*m = (t_mat4){{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
 	return (m);
 }
 
@@ -97,5 +93,40 @@ t_mat4	*mat_transmat4(
 	rmat->x[3] = vec->x;
 	rmat->y[3] = vec->y;
 	rmat->z[3] = vec->z;
+	return (rmat);
+}
+
+t_mat4	*mat_scalemat4(
+			t_mat4 *rmat,
+			const t_vec3f *vec
+			)
+{
+	mat_mat4ident(rmat);
+	rmat->x[0] = vec->x;
+	rmat->y[1] = vec->y;
+	rmat->z[2] = vec->z;
+	return (rmat);
+}
+
+t_mat4	*mat_lookatmat4(
+			t_mat4 *rmat,
+			const t_vec3f *pos,
+			const t_vec3f *look,
+			const t_vec3f *up
+			)
+{
+	t_vec3f	xaxis;
+	t_vec3f	yaxis;
+	t_vec3f	zaxis;
+
+	vec_vec3normalize(&zaxis, vec_vec3sub(&zaxis, look, pos));
+	vec_vec3normalize(&xaxis, vec_vec3cross(&xaxis, &zaxis, up));
+	vec_vec3cross(&yaxis, &xaxis, &zaxis);
+	*rmat = (t_mat4){
+	{xaxis.x, xaxis.y, xaxis.z, vec_vec3dot(&xaxis, pos)},
+	{yaxis.x, yaxis.y, yaxis.z, vec_vec3dot(&yaxis, pos)},
+	{zaxis.x, zaxis.y, zaxis.z, vec_vec3dot(&zaxis, pos)},
+	{0., 0., 0., 1.}
+	};
 	return (rmat);
 }

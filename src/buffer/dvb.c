@@ -88,4 +88,3 @@ int	dvb_pop_back(
 	(void)(vec);
 	return (0);
 }
-
