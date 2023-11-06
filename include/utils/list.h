@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dvb.h                                              :+:      :+:    :+:   */
+/*   list.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/03 16:28:37 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/04 13:06:43 by ale-boud         ###   ########.fr       */
+/*   Created: 2023/11/06 02:22:56 by ale-boud          #+#    #+#             */
+/*   Updated: 2023/11/06 02:36:18 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
- * @file dvb.h
- * @author ale-boud (ale-boud@student.42.fr)
- * @brief Dynamic size vertex buffer.
- * @date 2023-11-03
+ * @file list.h
+ * @author your name (you@domain.com)
+ * @brief The definition of a dynamic list.
+ * @date 2023-11-06
  * @copyright Copyright (c) 2023
  */
 
-#ifndef  DVB_H
-# define DVB_H
+#ifndef  LIST_H
+# define LIST_H
+
 
 // ************************************************************************** //
 // *                                                                        * //
@@ -27,10 +28,7 @@
 // *                                                                        * //
 // ************************************************************************** //
 
-# include <GL/glew.h>
-
-# include "math/vector.h"
-# include "buffer/vb.h"
+# include <stddef.h>
 
 // ************************************************************************** //
 // *                                                                        * //
@@ -39,25 +37,15 @@
 // ************************************************************************** //
 
 /**
- * @struct s_dvb
- * @brief Definition of a dynamic size vertex buffer.
+ * @struct s_list
+ * @brief Definition of a dynamic list.
  */
-typedef struct s_dvb {
-	/**
-	 * @brief The vertices.
-	 */
-	t_vec3f	*vertices;
-
-	/**
-	 * @brief The number of vertices in #vertices.
-	 */
-	size_t	size;
-
-	/**
-	 * @brief Number of vertices alloced in #vertices.
-	 */
+typedef struct s_list {
+	void	*data;
+	size_t	used;
 	size_t	alloced;
-}	t_dvb;
+	size_t	elemsize;
+}	t_list;
 
 // ************************************************************************** //
 // *                                                                        * //
@@ -66,56 +54,34 @@ typedef struct s_dvb {
 // ************************************************************************** //
 
 /**
- * @brief Create a #s_dvb.
- * @return #s_dvb* created #s_dvb.
+ * @brief Initialize the list.
+ * @param l The #s_list.
+ * @param elemsize Size of 1 elem.
+ * @return int 0 if success. non-null value if malloc error.
  */
-t_dvb	*dvb_init(void);
-
-/**
- * @brief Create a #s_dvb from a #s_vb.
- * @param vb The #s_vb to copy.
- * @return #s_dvb* created dvb.
- */
-t_dvb	*dvb_init_vb(
-			const t_vb *vb
+int		list_init(
+			t_list *l,
+			size_t elemsize
 			);
 
 /**
- * @brief Destroy a #s_dvb.
- * @param dvb The #s_dvb to destroy.
+ * @brief The len of the #s_list
+ * @param l The #s_list
+ * @return size_t The len of the #s_list.
  */
-void	dvb_destroy(
-			t_dvb *dvb
+size_t	list_len(
+			const t_list *l
 			);
 
 /**
- * @brief Erase a #s_dvb.
- * @param dvb The #s_dvb to erase.
+ * @brief Pushback elem to the #s_list.
+ * @param l The #s_list.
+ * @param elem The elem
+ * @return int 0 if success. non-null value if malloc error.
  */
-void	dvb_erase(
-			t_dvb *dvb
-			);
-
-/**
- * @brief Insert a #s_vec3f into the back of a #s_dvb.
- * @param dvb The #s_dvb.
- * @param vec The #s_vec3f to insert back.
- * @return int @c 0 if success. non-null value if error.
- */
-int		dvb_insert_back(
-			t_dvb *dvb,
-			const t_vec3f *vec
-			);
-
-/**
- * @brief Pop back a #s_vec3f of a #s_dvb.
- * @param dvb The #s_dvb.
- * @param vec The #s_vec3f popped.
- * @return int @c 0 if success. non-null value if error.
- */
-int		dvb_pop_back(
-			t_dvb *dvb,
-			t_vec3f *vec
+int		list_pushback(
+			t_list *l,
+			void *elem
 			);
 
 #endif

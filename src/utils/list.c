@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vb.c                                               :+:      :+:    :+:   */
+/*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/03 17:00:10 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/03 17:03:04 by ale-boud         ###   ########.fr       */
+/*   Created: 2023/11/06 02:36:49 by ale-boud          #+#    #+#             */
+/*   Updated: 2023/11/06 02:42:54 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
- * @file vb.c
- * @author ale-boud (ale-boud@student.42.fr)
- * @brief The fixed size vertex buffer implementation.
- * @date 2023-11-03
+ * @file list.c
+ * @author your name (you@domain.com)
+ * @brief The implementation of a dynamic list.
+ * @date 2023-11-06
  * @copyright Copyright (c) 2023
  */
 
@@ -25,42 +25,47 @@
 // ************************************************************************** //
 
 #include <stdlib.h>
+#include <string.h>
 
-#include "buffer/vb.h"
+#include "utils/list.h"
 
 // ************************************************************************** //
 // *                                                                        * //
-// * Function implementation                                                * //
+// * Header function                                                        * //
 // *                                                                        * //
 // ************************************************************************** //
 
-t_vb	*vb_init(
-			size_t size
+int	list_init(
+			t_list *l,
+			size_t elemsize
 			)
 {
-	t_vb	*vb;
-
-	vb = malloc(sizeof(*vb));
-	if (vb == NULL)
-		return (NULL);
-	vb->vertices = malloc(sizeof(*vb->vertices) * size);
-	if (vb->vertices == NULL)
-	{
-		free(vb);
-		return (NULL);
-	}
-	vb->size = size;
-	return (vb);
+	l->elemsize = elemsize;
+	l->used = 0;
+	l->alloced = 1;
+	l->data = malloc(sizeof(l->elemsize) * l->alloced);
+	return (l->data == NULL);
 }
 
-void	vb_destroy(
-			t_vb *vb
+size_t	list_len(
+			const t_list *l
 			)
 {
-	if (vb != NULL)
+	return (l->used);
+}
+
+int	list_pushback(
+		t_list *l,
+		void *elem
+		)
+{
+	if (l->used >= l->alloced)
 	{
-		if (vb->vertices != NULL)
-			free(vb->vertices);
-		free(vb);
+		l->data = realloc(l->data, l->elemsize * l->alloced * 2);
+		if (l->data == NULL)
+			return (1);
+		l->alloced *= 2;
 	}
+	memcpy((char *)l->data + (l->elemsize * l->used++), elem, l->elemsize);
+	return (0);
 }
