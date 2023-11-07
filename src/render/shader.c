@@ -6,14 +6,14 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 15:05:25 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/06 02:37:14 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/07 15:44:14 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
  * @file shader.c
  * @author ale-boud (ale-boud@student.42.fr)
- * @brief Shader utils implementation.
+ * @brief Shader implementation.
  * @date 2023-11-04
  * @copyright Copyright (c) 2023
  */
@@ -28,7 +28,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "utils/shader.h"
+#include "render/shader.h"
 
 // ************************************************************************** //
 // *                                                                        * //
@@ -38,10 +38,18 @@
 
 /**
  * @brief Write the compile error to STDERR, free the shader.
- * @param s The shader.
+ * @param s The shaderid.
  */
-static void	_compileshader_error(
+static void	_shader_compile_error(
 				GLuint s
+				);
+
+/**
+ * @brief Write the link error to STDERR, free the program.
+ * @param p The programid.
+ */
+static void	_shader_link_error(
+				GLuint p
 				);
 
 // ************************************************************************** //
@@ -76,11 +84,38 @@ GLuint	shader_compile(
 	glGetShaderiv(s, GL_COMPILE_STATUS, &st);
 	if (st == GL_FALSE)
 	{
-		_compileshader_error(s);
+		_shader_compile_error(s);
 		s = 0;
 	}
 	free(str);
 	return (s);
+}
+
+GLuint	shader_link(
+			GLuint verts,
+			GLuint frags
+			)
+{
+	GLuint	programid;
+	GLint	st;
+
+	programid = glCreateProgram();
+	if (programid == 0)
+		return (0);
+	glAttachShader(programid, verts);
+	glAttachShader(programid, frags);
+	glLinkProgram(programid);
+	glDetachShader(programid, verts);
+	glDetachShader(programid, frags);
+	glDeleteShader(verts);
+	glDeleteShader(frags);
+	glGetProgramiv(programid, GL_LINK_STATUS, &st);
+	if (st == GL_FALSE)
+	{
+		_shader_link_error(programid);
+		programid = 0;
+	}
+	return (programid);
 }
 
 // ************************************************************************** //
@@ -89,7 +124,7 @@ GLuint	shader_compile(
 // *                                                                        * //
 // ************************************************************************** //
 
-static void	_compileshader_error(GLuint s)
+static void	_shader_compile_error(GLuint s)
 {
 	GLsizei	errlen;
 	GLchar	errstr[1024];
@@ -97,4 +132,16 @@ static void	_compileshader_error(GLuint s)
 	glGetShaderInfoLog(s, sizeof(errstr), &errlen, errstr);
 	fprintf(stderr, "Shader compile error: %s", errstr);
 	glDeleteShader(s);
+}
+
+static void	_shader_link_error(
+				GLuint p
+				)
+{
+	GLsizei	errlen;
+	GLchar	errstr[1024];
+
+	glGetProgramInfoLog(p, sizeof(errstr), &errlen, errstr);
+	fprintf(stderr, "Shader compile error: %s", errstr);
+	glDeleteProgram(p);
 }

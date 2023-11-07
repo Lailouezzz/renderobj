@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ressources.h                                       :+:      :+:    :+:   */
+/*   shader.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/04 13:58:37 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/07 15:35:40 by ale-boud         ###   ########.fr       */
+/*   Created: 2023/11/04 15:02:44 by ale-boud          #+#    #+#             */
+/*   Updated: 2023/11/07 15:41:17 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
- * @file ressources.h
+ * @file shader.h
  * @author ale-boud (ale-boud@student.42.fr)
- * @brief Ressources extern symbols.
+ * @brief Shader utils definition.
  * @date 2023-11-04
  * @copyright Copyright (c) 2023
  */
 
-#ifndef  RESSOURCES_H
-# define RESSOURCES_H
+#ifndef  SHADER_H
+# define SHADER_H
 
 // ************************************************************************** //
 // *                                                                        * //
@@ -27,19 +27,36 @@
 // *                                                                        * //
 // ************************************************************************** //
 
-# include <stdint.h>
-# include <stddef.h>
+# include <GL/glew.h>
 
 // ************************************************************************** //
 // *                                                                        * //
-// * Extern symbols                                                         * //
+// * Function prototypes                                                    * //
 // *                                                                        * //
 // ************************************************************************** //
 
-extern char	res_shader_vert[]
-	asm("_binary_ressources_shader_vert_start");
+/**
+ * @brief Compile shader source.
+ * @param data The shader source. (non-null terminated).
+ * @param size The shader source size.
+ * @param type The shader type.
+ * @return GLuint the shader id. 0 if error and write error to STDERR.
+ */
+GLuint	shader_compile(
+			char *data,
+			size_t size,
+			GLenum type
+			);
 
-extern char	res_shader_vert_end[]
-	asm("_binary_ressources_shader_vert_end");
+/**
+ * @brief Link shader into a program
+ * @param verts The vertex shader.
+ * @param frags The frag shader.
+ * @return GLuint the program id. 0 if error and write error to STDERR.
+ */
+GLuint	shader_link(
+			GLuint verts,
+			GLuint frags
+			);
 
 #endif

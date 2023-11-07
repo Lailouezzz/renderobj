@@ -1,45 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ressources.h                                       :+:      :+:    :+:   */
+/*   binding.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/04 13:58:37 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/07 15:35:40 by ale-boud         ###   ########.fr       */
+/*   Created: 2023/11/07 14:43:43 by ale-boud          #+#    #+#             */
+/*   Updated: 2023/11/07 14:45:36 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
- * @file ressources.h
+ * @file binding.h
  * @author ale-boud (ale-boud@student.42.fr)
- * @brief Ressources extern symbols.
- * @date 2023-11-04
+ * @brief The binding definition.
+ * @date 2023-11-07
  * @copyright Copyright (c) 2023
  */
 
-#ifndef  RESSOURCES_H
-# define RESSOURCES_H
+
+#ifndef  BINDING_H
+# define BINDING_H
+
 
 // ************************************************************************** //
 // *                                                                        * //
-// * Include                                                                * //
+// * Includes                                                               * //
 // *                                                                        * //
 // ************************************************************************** //
 
-# include <stdint.h>
-# include <stddef.h>
-
 // ************************************************************************** //
 // *                                                                        * //
-// * Extern symbols                                                         * //
+// * Struct definition                                                      * //
 // *                                                                        * //
 // ************************************************************************** //
-
-extern char	res_shader_vert[]
-	asm("_binary_ressources_shader_vert_start");
-
-extern char	res_shader_vert_end[]
-	asm("_binary_ressources_shader_vert_end");
 
 #endif

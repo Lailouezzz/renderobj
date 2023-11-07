@@ -1,33 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shader.h                                           :+:      :+:    :+:   */
+/*   renderer.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/04 15:02:44 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/04 15:14:39 by ale-boud         ###   ########.fr       */
+/*   Created: 2023/11/07 16:32:52 by ale-boud          #+#    #+#             */
+/*   Updated: 2023/11/07 17:24:26 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
- * @file shader.h
+ * @file renderer.h
  * @author ale-boud (ale-boud@student.42.fr)
- * @brief Shader utils definition.
- * @date 2023-11-04
+ * @brief The renderer definition.
+ * @date 2023-11-07
  * @copyright Copyright (c) 2023
  */
 
-#ifndef  SHADER_H
-# define SHADER_H
+#ifndef  RENDERER_H
+# define RENDERER_H
 
 // ************************************************************************** //
 // *                                                                        * //
-// * Include                                                                * //
+// * Includes                                                               * //
 // *                                                                        * //
 // ************************************************************************** //
 
 # include <GL/glew.h>
+# include <GLFW/glfw3.h>
+
+# include "render/uniform.h"
+# include "math/matrix.h"
+
+// ************************************************************************** //
+// *                                                                        * //
+// * Struct definition                                                      * //
+// *                                                                        * //
+// ************************************************************************** //
+
+/**
+ * @todo Doc
+ */
+typedef struct s_renderer_ctx {
+	/* MESH */
+	t_vec3f		cam;
+	t_vec3f		focal;
+	int			width;
+	int			height;
+	t_uniforms	uniforms;
+	GLFWwindow	*window;
+}	t_renderer_ctx;
 
 // ************************************************************************** //
 // *                                                                        * //
@@ -35,17 +58,19 @@
 // *                                                                        * //
 // ************************************************************************** //
 
-/**
- * @brief Compile shader source.
- * @param data The shader source. (non-null terminated).
- * @param size The shader source size.
- * @param type The shader type.
- * @return GLuint the shader id. 0 if error and write error to STDERR.
- */
-GLuint	shader_compile(
-			char *data,
-			size_t size,
-			GLenum type
+int		renderer_init(
+			t_renderer_ctx *ctx,
+			int width,
+			int height,
+			const char *title
+			);
+
+void	renderer_deinit(
+			t_renderer_ctx *ctx
+			);
+
+int		renderer_render(
+			t_renderer_ctx *ctx
 			);
 
 #endif

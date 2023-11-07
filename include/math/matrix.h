@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:49:30 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/05 01:28:34 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/07 16:36:59 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,5 +130,4 @@ t_mat4	*mat_lookatmat4(
 			const t_vec3f *look,
 			const t_vec3f *up
 			);
-
 #endif
