@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 14:46:35 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/07 16:37:50 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:24:42 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 
 # include <GL/glew.h>
 
+# include "math/matrix.h"
+
 // ************************************************************************** //
 // *                                                                        * //
 // * Struct definition                                                      * //
@@ -47,7 +49,7 @@ typedef enum e_uniform_id {
  * @todo Doc
  */
 typedef struct s_uniforms {
-	GLint	programid;
+	GLuint	programid;
 	GLint	uniforms[UNIFORM__COUNT];
 }	t_uniforms;
 
@@ -63,9 +65,20 @@ typedef struct s_uniforms {
  * @param programid The programid.
  * @return int 0 if success. non-null value if error.
  */
-int	uniform_init(
+int		uniform_init(
 		t_uniforms *uniforms,
-		GLint programid
+		GLuint programid
 		);
+
+/**
+ * @brief Set the uniform.
+ * @param uid The uniform id #s_uniform_id.
+ * @param mat The matrix.
+ */
+void	uniform_setmat4(
+			t_uniforms *uniforms,
+			t_uniform_id uid,
+			const t_mat4 *mat
+			);
 
 #endif

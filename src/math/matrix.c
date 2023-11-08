@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 14:18:38 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/06 01:41:12 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:27:29 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,15 @@
 // *                                                                        * //
 // ************************************************************************** //
 
+#include <math.h>
+
 #include "math/matrix.h"
+
+// ************************************************************************** //
+// *                                                                        * //
+// * Function header                                                        * //
+// *                                                                        * //
+// ************************************************************************** //
 
 t_mat4	*mat_mat4empty(
 			t_mat4 *m
@@ -38,7 +46,12 @@ t_mat4	*mat_mat4ident(
 			t_mat4 *m
 			)
 {
-	*m = (t_mat4){{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
+	*m = (t_mat4){
+		{1., 0., 0., 0.},
+		{0., 1., 0., 0.},
+		{0., 0., 1., 0.},
+		{0., 0., 0., 1.}
+	};
 	return (m);
 }
 
@@ -120,13 +133,34 @@ t_mat4	*mat_lookatmat4(
 	t_vec3f	zaxis;
 
 	vec_vec3normalize(&zaxis, vec_vec3sub(&zaxis, look, pos));
-	vec_vec3normalize(&xaxis, vec_vec3cross(&xaxis, &zaxis, up));
-	vec_vec3cross(&yaxis, &xaxis, &zaxis);
+	vec_vec3normalize(&xaxis, vec_vec3cross(&xaxis, up, &zaxis));
+	vec_vec3cross(&yaxis, &zaxis, &xaxis);
 	*rmat = (t_mat4){
-	{xaxis.x, xaxis.y, xaxis.z, vec_vec3dot(&xaxis, pos)},
-	{yaxis.x, yaxis.y, yaxis.z, vec_vec3dot(&yaxis, pos)},
-	{zaxis.x, zaxis.y, zaxis.z, vec_vec3dot(&zaxis, pos)},
-	{0., 0., 0., 1.}
+	{xaxis.x, yaxis.x, zaxis.x, 0.},
+	{xaxis.y, yaxis.y, zaxis.y, 0.},
+	{xaxis.z, yaxis.z, zaxis.z, 0.},
+	{vec_vec3dot(&xaxis, look), vec_vec3dot(&yaxis, look), vec_vec3dot(&zaxis, look), 1.}
 	};
 	return (rmat);
+}
+
+#define FEAR 1000
+#define NEAR 0.1
+
+t_mat4	*mat_projperspmat4(
+			t_mat4 *rmat,
+			GLfloat fov,
+			int width,
+			int height
+			)
+{
+	const GLfloat	ar = (GLfloat)width / height;
+	const GLfloat	e = 1. / tanf(fov / 2);
+
+	mat_mat4empty(rmat);
+	rmat->x[0] = e / ar;
+	rmat->y[1] = e;
+	rmat->z[2] = (GLfloat)(FEAR + NEAR) / (NEAR - FEAR);
+	rmat->z[3] = (GLfloat)(2. * FEAR * NEAR) / (NEAR - FEAR);
+	rmat->w[2] = -1.;
 }

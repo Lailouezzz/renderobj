@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:32:52 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/07 17:24:26 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:39:25 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@
  */
 typedef struct s_renderer_ctx {
 	/* MESH */
+	GLuint		vao;
+	GLuint		vbo;
 	t_vec3f		cam;
 	t_vec3f		focal;
 	int			width;

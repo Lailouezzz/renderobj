@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 15:05:25 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/07 17:46:47 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:29:37 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static const char	*g_uniforms_name[UNIFORM__COUNT] = {
 
 int	uniform_init(
 		t_uniforms *uniforms,
-		GLint programid
+		GLuint programid
 		)
 {
 	int	k;
@@ -67,15 +67,25 @@ int	uniform_init(
 	{
 		uniforms->uniforms[k] = glGetUniformLocation(programid,
 				g_uniforms_name[k]);
-		if (uniforms->uniforms[k] == 0)
+		if (uniforms->uniforms[k] < 0)
 		{
 			fprintf(stderr, "Couldn't find \"%s\" uniform\n",
 				g_uniforms_name[k]);
+			glDeleteProgram(programid);
 			return (1);
 		}
 		++k;
 	}
 	return (0);
+}
+
+void	uniform_setmat4(
+			t_uniforms *uniforms,
+			t_uniform_id uid,
+			const t_mat4 *mat
+			)
+{
+	glUniformMatrix4fv(uniforms->uniforms[uid], 1, GL_FALSE, (GLfloat *)mat);
 }
 
 // ************************************************************************** //

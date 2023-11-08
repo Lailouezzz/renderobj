@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 13:58:37 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/07 15:35:40 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/08 12:48:31 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,11 @@ extern char	res_shader_vert[]
 
 extern char	res_shader_vert_end[]
 	asm("_binary_ressources_shader_vert_end");
+
+extern char	res_shader_frag[]
+	asm("_binary_ressources_shader_frag_start");
+
+extern char	res_shader_frag_end[]
+	asm("_binary_ressources_shader_frag_end");
 
 #endif

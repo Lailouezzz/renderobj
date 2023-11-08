@@ -4,5 +4,6 @@
 		"*.dep": "makefile",
 		"*.d": "makefile",
 		"Makefile.*": "makefile",
+		"cmath": "c"
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:13:05 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/07 17:49:41 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:17:18 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,14 @@
 // ************************************************************************** //
 
 #include <stdio.h>
+#include <string.h>
+#include <math.h>
 #include <GL/glew.h>
 
+#include "render/shader.h"
 #include "render/renderer.h"
+
+#include "ressources.h"
 
 // ************************************************************************** //
 // *                                                                        * //
@@ -42,13 +47,30 @@ static int	_renderer_init_window(
 				const char *title
 				);
 
-static void	_renderer_keycb(GLFWwindow *window,
+static int	_renderer_init_shader(
+				t_renderer_ctx *ctx
+				);
+
+static int	_renderer_init_buffer(
+				t_renderer_ctx *ctx
+				);
+
+static void	_renderer_keycb(
+				GLFWwindow *window,
 				int key,
 				int scancode,
 				int action,
 				int mods
 				);
 
+static void	_renderer_close_keycb(
+				GLFWwindow *window
+				);
+
+static t_mat4	*_renderer_get_mvp(
+					t_renderer_ctx *ctx,
+					t_mat4 *rmat
+					);
 
 // ************************************************************************** //
 // *                                                                        * //
@@ -56,17 +78,35 @@ static void	_renderer_keycb(GLFWwindow *window,
 // *                                                                        * //
 // ************************************************************************** //
 
-int	renderer_init(t_renderer_ctx *ctx,
+int	renderer_init(
+		t_renderer_ctx *ctx,
 		int width,
 		int height,
 		const char *title
 		)
 {
+	GLenum	gst;
+
+	memset(ctx, 0, sizeof(*ctx));
 	if (_renderer_init_window(ctx, width, height, title) != 0)
+	{
+		renderer_deinit(ctx);
 		return (1);
-	glfwSetKeyCallback(ctx->window, _renderer_keycb);
-	glfwMakeContextCurrent(ctx->window);
-	glfwSwapInterval(1);
+	}
+	gst = glewInit();
+	if (gst != GLEW_OK)
+	{
+		fprintf(stderr, "Error: %s\n", glewGetErrorString(gst));
+		renderer_deinit(ctx);
+		return (1);
+	}
+	ctx->uniforms.programid = 0;
+	if (_renderer_init_shader(ctx) != 0 || _renderer_init_buffer(ctx) != 0)
+	{
+		renderer_deinit(ctx);
+		return (1);
+	}
+	glEnable(GL_DEPTH_TEST);
 	return (0);
 }
 
@@ -74,8 +114,8 @@ void	renderer_deinit(
 			t_renderer_ctx *ctx
 			)
 {
-
-	glfwDestroyWindow(ctx->window);
+	if (ctx->window != NULL)
+		glfwDestroyWindow(ctx->window);
 	glfwTerminate();
 }
 
@@ -83,8 +123,18 @@ int	renderer_render(
 		t_renderer_ctx *ctx
 		)
 {
+	t_mat4	mvp;
+
 	glViewport(0, 0, ctx->width, ctx->height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glUseProgram(ctx->uniforms.programid);
+	uniform_setmat4(&ctx->uniforms, UNIFORM_MVP, _renderer_get_mvp(ctx, &mvp));
+	glBindVertexArray(ctx->vao);
+	glEnableVertexAttribArray(0);
+	glDrawArrays(GL_TRIANGLES, 0, 3*2*6);
+	glDisableVertexAttribArray(0);
+	glBindVertexArray(0);
+	glUseProgram(0);
 	glfwSwapBuffers(ctx->window);
 	glfwPollEvents();
 	return (0);
@@ -103,6 +153,8 @@ static int	_renderer_init_window(
 				const char *title
 				)
 {
+	if (glfwInit() != GL_TRUE)
+		return (1);
 	glfwDefaultWindowHints();
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -110,14 +162,108 @@ static int	_renderer_init_window(
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glewExperimental = GL_TRUE;
 	ctx->window = glfwCreateWindow(width, height, title, NULL, NULL);
 	if (ctx->window == NULL)
 		return (1);
 	glfwGetFramebufferSize(ctx->window, &ctx->width, &ctx->height);
+	glfwSetWindowUserPointer(ctx->window, ctx);
+	glfwSetKeyCallback(ctx->window, _renderer_keycb);
+	glfwSetWindowCloseCallback(ctx->window, _renderer_close_keycb);
+	glfwMakeContextCurrent(ctx->window);
+	glfwSwapInterval(1);
 	return (0);
 }
 
-static void	_renderer_keycb(GLFWwindow *window,
+static int	_renderer_init_shader(
+				t_renderer_ctx *ctx
+				)
+{
+	GLint	sv;
+	GLint	sf;
+	GLint	programid;
+
+	sv = shader_compile(res_shader_vert, res_shader_vert_end - res_shader_vert,
+			GL_VERTEX_SHADER);
+	if (sv == 0)
+		return (1);
+	sf = shader_compile(res_shader_frag, res_shader_frag_end - res_shader_frag,
+			GL_FRAGMENT_SHADER);
+	if (sf == 0)
+	{
+		glDeleteShader(sv);
+		return (1);
+	}
+	programid = shader_link(sv, sf);
+	if (programid == 0)
+	{
+		glDeleteShader(sv);
+		glDeleteShader(sf);
+		return (1);
+	}
+	return (uniform_init(&ctx->uniforms, programid));
+}
+
+static int	_renderer_init_buffer(
+				t_renderer_ctx *ctx
+				)
+{
+	static GLfloat vecs[] = {
+    -1.0f,-1.0f,-1.0f,
+    -1.0f,-1.0f, 1.0f,
+    -1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f,-1.0f,
+    -1.0f,-1.0f,-1.0f,
+    -1.0f, 1.0f,-1.0f,
+    1.0f,-1.0f, 1.0f,
+    -1.0f,-1.0f,-1.0f,
+    1.0f,-1.0f,-1.0f,
+    1.0f, 1.0f,-1.0f,
+    1.0f,-1.0f,-1.0f,
+    -1.0f,-1.0f,-1.0f,
+    -1.0f,-1.0f,-1.0f,
+    -1.0f, 1.0f, 1.0f,
+    -1.0f, 1.0f,-1.0f,
+    1.0f,-1.0f, 1.0f,
+    -1.0f,-1.0f, 1.0f,
+    -1.0f,-1.0f,-1.0f,
+    -1.0f, 1.0f, 1.0f,
+    -1.0f,-1.0f, 1.0f,
+    1.0f,-1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f,
+    1.0f,-1.0f,-1.0f,
+    1.0f, 1.0f,-1.0f,
+    1.0f,-1.0f,-1.0f,
+    1.0f, 1.0f, 1.0f,
+    1.0f,-1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f,-1.0f,
+    -1.0f, 1.0f,-1.0f,
+    1.0f, 1.0f, 1.0f,
+    -1.0f, 1.0f,-1.0f,
+    -1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f,
+    -1.0f, 1.0f, 1.0f,
+    1.0f,-1.0f, 1.0f
+};
+	for (int k = 0; k < sizeof(vecs) / sizeof(*vecs); ++k)
+	{
+		vecs[k] /= 4.;
+	}
+
+	glGenVertexArrays(1, &ctx->vao);
+	glBindVertexArray(ctx->vao);
+	glGenBuffers(1, &ctx->vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, ctx->vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vecs), vecs, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+	return (0);
+}
+
+static void	_renderer_keycb(
+				GLFWwindow *window,
 				int key,
 				int scancode,
 				int action,
@@ -128,4 +274,23 @@ static void	_renderer_keycb(GLFWwindow *window,
 		key, scancode, action, mods);
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
 		glfwSetWindowShouldClose(window, GL_TRUE);
+}
+
+static void	_renderer_close_keycb(
+				GLFWwindow *window
+				)
+{
+	glfwWindowShouldClose(window);
+}
+
+static t_mat4	*_renderer_get_mvp(
+				t_renderer_ctx *ctx,
+				t_mat4 *rmat
+				)
+{
+	static float	x = 0.;
+	t_mat4			tmp;
+
+	x += 0.01;
+	return (mat_lookatmat4(rmat, &(t_vec3f){cos(x) * 10., 1., sin(x) * 10.}, &(t_vec3f){0., 0., 0.},  &(t_vec3f){0., 1., 0.}));
 }

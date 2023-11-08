@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:49:30 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/07 16:36:59 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:51:31 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
  * @struct s_mat4
  * @brief Matrix 4x4.
  */
-typedef struct __attribute__((packed)) s_mat4 {
+typedef struct s_mat4 {
 	GLfloat	x[4];
 	GLfloat	y[4];
 	GLfloat	z[4];
@@ -130,4 +130,20 @@ t_mat4	*mat_lookatmat4(
 			const t_vec3f *look,
 			const t_vec3f *up
 			);
+
+/**
+ * @brief Produce a perspective projection perspective.
+ * @param rmat #s_mat4 store the result.
+ * @param fov FOV in degree.
+ * @param width width of buffer.
+ * @param height height of buffer.
+ * @return Pointer to rmat.
+ */
+t_mat4	*mat_projperspmat4(
+			t_mat4 *rmat,
+			GLfloat fov,
+			int width,
+			int height
+			);
+
 #endif
