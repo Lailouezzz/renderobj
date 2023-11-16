@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:13:05 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/16 18:35:12 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/16 18:37:50 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,38 +41,38 @@
 // *                                                                        * //
 // ************************************************************************** //
 
-static int	_renderer_init_window(
-				t_renderer_ctx *ctx,
-				int width,
-				int height,
-				const char *title
-				);
+static int		_renderer_init_window(
+					t_renderer_ctx *ctx,
+					int width,
+					int height,
+					const char *title
+					);
 
-static int	_renderer_init_shader(
-				t_renderer_ctx *ctx
-				);
+static int		_renderer_init_shader(
+					t_renderer_ctx *ctx
+					);
 
-static int	_renderer_init_buffer(
-				t_renderer_ctx *ctx
-				);
+static int		_renderer_init_buffer(
+					t_renderer_ctx *ctx
+					);
 
-static void	_renderer_keycb(
-				GLFWwindow *window,
-				int key,
-				int scancode,
-				int action,
-				int mods
-				);
+static void		_renderer_keycb(
+					GLFWwindow *window,
+					int key,
+					int scancode,
+					int action,
+					int mods
+					);
 
-static void	_renderer_close_keycb(
-				GLFWwindow *window
-				);
+static void		_renderer_close_keycb(
+					GLFWwindow *window
+					);
 
-static void	_renderer_sizecb(
-				GLFWwindow *window,
-				int width,
-				int height
-				);
+static void		_renderer_sizecb(
+					GLFWwindow *window,
+					int width,
+					int height
+					);
 
 static t_mat4	*_renderer_get_mvp(
 					t_renderer_ctx *ctx,
@@ -218,49 +218,48 @@ static int	_renderer_init_buffer(
 				t_renderer_ctx *ctx
 				)
 {
-	static GLfloat vecs[] = {
-    -1.0f,-1.0f,-1.0f,
-    -1.0f,-1.0f, 1.0f,
-    -1.0f, 1.0f, 1.0f,
-    1.0f, 1.0f,-1.0f,
-    -1.0f,-1.0f,-1.0f,
-    -1.0f, 1.0f,-1.0f,
-    1.0f,-1.0f, 1.0f,
-    -1.0f,-1.0f,-1.0f,
-    1.0f,-1.0f,-1.0f,
-    1.0f, 1.0f,-1.0f,
-    1.0f,-1.0f,-1.0f,
-    -1.0f,-1.0f,-1.0f,
-    -1.0f,-1.0f,-1.0f,
-    -1.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f,-1.0f,
-    1.0f,-1.0f, 1.0f,
-    -1.0f,-1.0f, 1.0f,
-    -1.0f,-1.0f,-1.0f,
-    -1.0f, 1.0f, 1.0f,
-    -1.0f,-1.0f, 1.0f,
-    1.0f,-1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,
-    1.0f,-1.0f,-1.0f,
-    1.0f, 1.0f,-1.0f,
-    1.0f,-1.0f,-1.0f,
-    1.0f, 1.0f, 1.0f,
-    1.0f,-1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,
-    1.0f, 1.0f,-1.0f,
-    -1.0f, 1.0f,-1.0f,
-    1.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f,-1.0f,
-    -1.0f, 1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f, 1.0f,
-    1.0f,-1.0f, 1.0f
-};
+	static GLfloat	vecs[] = {
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,
+		1.0f, 1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, 1.0f, -1.0f,
+		1.0f, -1.0f, 1.0f,
+		-1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, 1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f, -1.0f,
+		1.0f, -1.0f, 1.0f,
+		-1.0f, -1.0f, 1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, 1.0f, 1.0f,
+		-1.0f, -1.0f, 1.0f,
+		1.0f, -1.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, 1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, 1.0f, 1.0f,
+		1.0f, -1.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,
+		1.0f, 1.0f, -1.0f,
+		-1.0f, 1.0f, -1.0f,
+		1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f, -1.0f,
+		-1.0f, 1.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,
+		1.0f, -1.0f, 1.0f
+	};
 	for (int k = 0; k < sizeof(vecs) / sizeof(*vecs); ++k)
 	{
 		vecs[k] /= 4.;
 	}
-
 	glGenVertexArrays(1, &ctx->vao);
 	glBindVertexArray(ctx->vao);
 	glGenBuffers(1, &ctx->vbo);
