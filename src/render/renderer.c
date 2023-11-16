@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:13:05 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/08 19:17:18 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/16 18:35:12 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 // ************************************************************************** //
 
 #include <stdio.h>
+#include <unistd.h>
 #include <string.h>
 #include <math.h>
 #include <GL/glew.h>
@@ -65,6 +66,12 @@ static void	_renderer_keycb(
 
 static void	_renderer_close_keycb(
 				GLFWwindow *window
+				);
+
+static void	_renderer_sizecb(
+				GLFWwindow *window,
+				int width,
+				int height
 				);
 
 static t_mat4	*_renderer_get_mvp(
@@ -114,6 +121,7 @@ void	renderer_deinit(
 			t_renderer_ctx *ctx
 			)
 {
+	glDeleteProgram(ctx->uniforms.programid);
 	if (ctx->window != NULL)
 		glfwDestroyWindow(ctx->window);
 	glfwTerminate();
@@ -125,13 +133,14 @@ int	renderer_render(
 {
 	t_mat4	mvp;
 
+	usleep(16000);
 	glViewport(0, 0, ctx->width, ctx->height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(ctx->uniforms.programid);
 	uniform_setmat4(&ctx->uniforms, UNIFORM_MVP, _renderer_get_mvp(ctx, &mvp));
 	glBindVertexArray(ctx->vao);
 	glEnableVertexAttribArray(0);
-	glDrawArrays(GL_TRIANGLES, 0, 3*2*6);
+	glDrawArrays(GL_TRIANGLES, 0, 3 * 2 * 6);
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
 	glUseProgram(0);
@@ -156,8 +165,8 @@ static int	_renderer_init_window(
 	if (glfwInit() != GL_TRUE)
 		return (1);
 	glfwDefaultWindowHints();
-	glfwWindowHint(GLFW_SAMPLES, 4);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	glfwWindowHint(GLFW_SAMPLES, 8);
+	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -169,6 +178,7 @@ static int	_renderer_init_window(
 	glfwGetFramebufferSize(ctx->window, &ctx->width, &ctx->height);
 	glfwSetWindowUserPointer(ctx->window, ctx);
 	glfwSetKeyCallback(ctx->window, _renderer_keycb);
+	glfwSetWindowSizeCallback(ctx->window, _renderer_sizecb);
 	glfwSetWindowCloseCallback(ctx->window, _renderer_close_keycb);
 	glfwMakeContextCurrent(ctx->window);
 	glfwSwapInterval(1);
@@ -276,6 +286,19 @@ static void	_renderer_keycb(
 		glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
+static void	_renderer_sizecb(
+				GLFWwindow *window,
+				int width,
+				int height
+				)
+{
+	t_renderer_ctx	*ctx;
+
+	ctx = glfwGetWindowUserPointer(window);
+	ctx->width = width;
+	ctx->height = height;
+}
+
 static void	_renderer_close_keycb(
 				GLFWwindow *window
 				)
@@ -284,13 +307,16 @@ static void	_renderer_close_keycb(
 }
 
 static t_mat4	*_renderer_get_mvp(
-				t_renderer_ctx *ctx,
-				t_mat4 *rmat
-				)
+					t_renderer_ctx *ctx,
+					t_mat4 *rmat
+					)
 {
 	static float	x = 0.;
 	t_mat4			tmp;
 
 	x += 0.01;
-	return (mat_lookatmat4(rmat, &(t_vec3f){cos(x) * 10., 1., sin(x) * 10.}, &(t_vec3f){0., 0., 0.},  &(t_vec3f){0., 1., 0.}));
+	mat_lookatmat4(&tmp, &(t_vec3f){cos(x) * 2., 1., sin(x) * 2.},
+		&(t_vec3f){sin(x * 4), 0., cos(x * 2)}, &(t_vec3f){0., 1., 0.});
+	mat_projperspmat4(rmat, 1.4, ctx->width, ctx->height);
+	return (mat_mat4xmat4(rmat, rmat, &tmp));
 }

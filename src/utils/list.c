@@ -6,13 +6,13 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 02:36:49 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/06 02:42:54 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/16 18:14:48 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
  * @file list.c
- * @author your name (you@domain.com)
+ * @author ale-boud (ale-boud@student.42.fr)
  * @brief The implementation of a dynamic list.
  * @date 2023-11-06
  * @copyright Copyright (c) 2023

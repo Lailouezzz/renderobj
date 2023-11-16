@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:49:30 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/08 15:51:31 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/16 18:23:31 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,22 @@
  * @brief Matrix 4x4.
  */
 typedef struct s_mat4 {
-	GLfloat	x[4];
-	GLfloat	y[4];
-	GLfloat	z[4];
-	GLfloat	w[4];
+	GLfloat	x0;
+	GLfloat	y0;
+	GLfloat	z0;
+	GLfloat	w0;
+	GLfloat	x1;
+	GLfloat	y1;
+	GLfloat	z1;
+	GLfloat	w1;
+	GLfloat	x2;
+	GLfloat	y2;
+	GLfloat	z2;
+	GLfloat	w2;
+	GLfloat	x3;
+	GLfloat	y3;
+	GLfloat	z3;
+	GLfloat	w3;
 }	t_mat4;
 
 // ************************************************************************** //
@@ -74,12 +86,14 @@ t_mat4	*mat_mat4ident(
 
 /**
  * @brief Perform a matrix matrix product (mat1 * mat2).
- * @param mat1 #s_mat4 the mat1. (store the result).
+ * @param rmat #s_mat4 store the result.
+ * @param mat1 #s_mat4 the mat1.
  * @param mat2 #s_mat4 the mat2.
- * @return Pointer to mat1.
+ * @return Pointer to rmat.
  */
 t_mat4	*mat_mat4xmat4(
-			t_mat4 *mat1,
+			t_mat4 *rmat,
+			const t_mat4 *mat1,
 			const t_mat4 *mat2
 			);
 
