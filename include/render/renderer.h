@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:32:52 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/08 15:39:25 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/21 09:46:29 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # include <GL/glew.h>
 # include <GLFW/glfw3.h>
 
+# include "utils/fdfloader.h"
+# include "binding/binding.h"
 # include "render/uniform.h"
 # include "math/matrix.h"
 
@@ -44,13 +46,15 @@
  */
 typedef struct s_renderer_ctx {
 	/* MESH */
-	GLuint		vao;
-	GLuint		vbo;
+	t_fdf		fdf;
 	t_vec3f		cam;
 	t_vec3f		focal;
 	int			width;
 	int			height;
+	float		fov;
+	GLfloat		zmul;
 	t_uniforms	uniforms;
+	t_bindings	bindings;
 	GLFWwindow	*window;
 }	t_renderer_ctx;
 
@@ -72,6 +76,17 @@ void	renderer_deinit(
 			);
 
 int		renderer_render(
+			t_renderer_ctx *ctx
+			);
+
+// ************************************************************************** //
+// *                                                                        * //
+// * Private function                                                       * //
+// *                                                                        * //
+// ************************************************************************** //
+
+
+int		_renderer_init_binding(
 			t_renderer_ctx *ctx
 			);
 

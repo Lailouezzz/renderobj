@@ -8,3 +8,6 @@ build/
 
 # configure.sh generated
 Makefile.cfg
+
+# .fdf files
+*.fdf

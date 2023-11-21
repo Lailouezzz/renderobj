@@ -5,5 +5,6 @@ in float dist;
 
 void	main()
 {
-	fragColor = vec4(0., 1. - dist / 2., 1. - dist / 2., 1.);
+	float d = 2000.;
+	fragColor = vec4((dist + 1000) / d, 1 - (dist + 1000) / d, 1 - (dist + 1000) / d, 1.);
 }

@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 14:18:38 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/16 18:21:36 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/21 00:55:01 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ t_mat4	*mat_lookatmat4(
 }
 
 #define FAR 1000.
-#define NEAR 0.1
+#define NEAR 0.01
 
 t_mat4	*mat_projperspmat4(
 			t_mat4 *rmat,
@@ -166,7 +166,7 @@ t_mat4	*mat_projperspmat4(
 	const GLfloat	e = 1. / tanf(fov / 2);
 
 	mat_mat4empty(rmat);
-	rmat->x0 = e / ar;
+	rmat->x0 = -e / ar;
 	rmat->y1 = e;
 	rmat->z2 = (GLfloat)(FAR + NEAR) / (FAR - NEAR);
 	rmat->z3 = -(GLfloat)(2. * FAR * NEAR) / (FAR - NEAR);
