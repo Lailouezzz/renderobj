@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:13:05 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/21 09:59:05 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/21 14:42:52 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ int	renderer_init(
 		return (1);
 	}
 	ctx->fov = 1.5;
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glEnable(GL_DEPTH_TEST);
 	return (0);
 }
@@ -137,6 +136,7 @@ int	renderer_render(
 {
 	t_mat4	tmp;
 
+	usleep(1000);
 	glViewport(0, 0, ctx->width, ctx->height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(ctx->uniforms.programid);
@@ -227,7 +227,7 @@ static int	_renderer_init_buffer(
 				)
 {
 	ctx->fdf = fdf_load(fopen("42.fdf", "r"));
-	ctx->zmul = 1.;
+	ctx->zmul = 0.005;
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 15:02:44 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/07 15:41:17 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/21 10:21:04 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 
 /**
  * @brief Compile shader source.
- * @param data The shader source. (non-null terminated).
+ * @param data The shader source.
  * @param size The shader source size.
  * @param type The shader type.
  * @return GLuint the shader id. 0 if error and write error to STDERR.

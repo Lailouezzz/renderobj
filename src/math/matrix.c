@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 14:18:38 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/21 00:55:01 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/21 12:42:16 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ t_mat4	*mat_lookatmat4(
 	return (rmat);
 }
 
-#define FAR 1000.
+#define FAR 10000.
 #define NEAR 0.01
 
 t_mat4	*mat_projperspmat4(

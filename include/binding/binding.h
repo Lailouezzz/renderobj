@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 14:43:43 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/21 09:44:12 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/21 10:05:31 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ typedef enum e_key_bind {
 	KEY_BIND_ROTRIGHT,
 	KEY_BIND_UP,
 	KEY_BIND_DOWN,
-	KEY_BIND_PROJ,
 	KEY_BIND_ZOOMIN,
 	KEY_BIND_ZOOMOUT,
 	KEY_BIND_ZMULP,

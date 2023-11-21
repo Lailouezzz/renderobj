@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 06:04:26 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/21 09:52:35 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/21 13:46:07 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 // * Include                                                                * //
 // *                                                                        * //
 // ************************************************************************** //
+
+#include <math.h>
 
 #include "render/renderer.h"
 
@@ -70,12 +72,6 @@ static void	_rotcb(
 				t_cookie *cookie
 				);
 
-static void	_projcb(
-				t_renderer_ctx *ctx,
-				t_key_bind bind,
-				t_cookie *cookie
-				);
-
 static void	_zoomcb(
 				t_renderer_ctx *ctx,
 				t_key_bind bind,
@@ -111,8 +107,6 @@ const t_binding_def	g_bindingsdef[] = {
 	KEY_ACTION_NONE, KEY_STATE_DOWN, GLFW_KEY_R, (t_key_cb)_transcb},
 {KEY_BIND_DOWN,
 	KEY_ACTION_NONE, KEY_STATE_DOWN, GLFW_KEY_F, (t_key_cb)_transcb},
-{KEY_BIND_PROJ,
-	KEY_ACTION_PRESS, 0, GLFW_KEY_F, (t_key_cb)_projcb},
 {KEY_BIND_ZOOMIN,
 	KEY_ACTION_NONE, KEY_STATE_DOWN, GLFW_KEY_T, (t_key_cb)_zoomcb},
 {KEY_BIND_ZOOMOUT,
@@ -230,17 +224,6 @@ static void	_rotcb(
 	ctx->focal.y = (-sin(cookie->yrot));
 }
 
-static void	_projcb(
-				t_renderer_ctx *ctx,
-				t_key_bind bind,
-				t_cookie *cookie
-				)
-{
-	(void)(ctx);
-	(void)(bind);
-	(void)(cookie);
-}
-
 static void	_zoomcb(
 				t_renderer_ctx *ctx,
 				t_key_bind bind,
@@ -264,7 +247,7 @@ static void	_zmulcb(
 	(void)(cookie);
 
 	if (bind == KEY_BIND_ZMULP)
-		ctx->zmul += 0.005;
+		ctx->zmul += 0.0005;
 	if (bind == KEY_BIND_ZMULM)
-		ctx->zmul -= 0.005;
+		ctx->zmul -= 0.0005;
 }
