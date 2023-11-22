@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:13:05 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/21 14:42:52 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:38:46 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,6 @@ int	renderer_render(
 {
 	t_mat4	tmp;
 
-	usleep(1000);
 	glViewport(0, 0, ctx->width, ctx->height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(ctx->uniforms.programid);
@@ -226,6 +225,8 @@ static int	_renderer_init_buffer(
 				t_renderer_ctx *ctx
 				)
 {
+	ctx->cam = (t_vec3f){0., 0., 0.};
+	ctx->focal = (t_vec3f){0., 0., 1.};
 	ctx->fdf = fdf_load(fopen("42.fdf", "r"));
 	ctx->zmul = 0.005;
 	return (0);

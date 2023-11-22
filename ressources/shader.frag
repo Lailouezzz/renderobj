@@ -19,14 +19,14 @@ const vec3 neige = vec3(1., 1., 1.);
 
 const colorgrad colgrads[] = {
 	colorgrad(deepocean, -6000.),
-	colorgrad(softocean, -1000.),
-	colorgrad(softocean, -5.),
-	colorgrad(sand, -5.),
-	colorgrad(sand, 5.),
-	colorgrad(verdureverte, 5.),
+	colorgrad(softocean, 0.),
+	colorgrad(sand, 0.),
+	colorgrad(sand, 3.),
+	colorgrad(verdureverte, 2.),
 	colorgrad(verduremoinsverte, 600.),
 	colorgrad(terre, 800.),
 	colorgrad(roche, 2000.),
+	colorgrad(roche, 2200.),
 	colorgrad(neige, 2800.),
 };
 

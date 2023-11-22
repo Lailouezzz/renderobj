@@ -6,7 +6,7 @@
 /*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 06:04:26 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/21 13:46:07 by ale-boud         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:29:29 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,9 +200,9 @@ static void	_transcb(
 		vec_vec3sub(&ctx->cam, &ctx->cam, vec_vec3normalize(&tmp,
 				vec_vec3cross(&tmp, &(t_vec3f){0., 1., 0.}, &ctx->focal)));
 	if (bind == KEY_BIND_UP)
-		ctx->cam.y += 0.75;
+		vec_vec3add(&ctx->cam, &ctx->cam, vec_vec3normalize(&tmp, &ctx->cam));
 	if (bind == KEY_BIND_DOWN)
-		ctx->cam.y -= 0.75;
+		vec_vec3sub(&ctx->cam, &ctx->cam, vec_vec3normalize(&tmp, &ctx->cam));
 }
 
 static void	_rotcb(
