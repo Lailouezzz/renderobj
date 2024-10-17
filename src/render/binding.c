@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   binding.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-boud <ale-boud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ale-boud <ale-boud@student.42lehavre.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 06:04:26 by ale-boud          #+#    #+#             */
-/*   Updated: 2023/11/22 12:29:29 by ale-boud         ###   ########.fr       */
+/*   Updated: 2024/10/17 21:28:01 by ale-boud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	_renderer_init_binding(
 	size_t		k;
 	t_cookie	*cookie;
 
-	cookie = malloc(sizeof(cookie));
+	cookie = malloc(sizeof(*cookie));
 	if (cookie == NULL)
 		return (1);
 	cookie->xrot = 0;
